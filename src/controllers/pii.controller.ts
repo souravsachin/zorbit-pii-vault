@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Req,
 } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { Request } from 'express';
 import { TokenizationService } from '../services/tokenization.service';
 import { DetokenizationService } from '../services/detokenization.service';
@@ -33,6 +34,8 @@ import { PiiAccessLog } from '../models/entities/pii-access-log.entity';
  * All endpoints require JWT authentication.
  * PII data is encrypted at rest — raw PII is never stored.
  */
+@ApiTags('pii')
+@ApiBearerAuth()
 @Controller('api/v1/G/pii')
 @UseGuards(JwtAuthGuard)
 export class PiiController {
@@ -42,12 +45,11 @@ export class PiiController {
     private readonly auditService: AuditService,
   ) {}
 
-  /**
-   * POST /api/v1/G/pii/tokenize
-   * Store PII data encrypted, return an opaque token.
-   */
   @Post('tokenize')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Tokenize PII', description: 'Store PII data encrypted, return an opaque token.' })
+  @ApiResponse({ status: 201, description: 'PII tokenized successfully, token returned.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
   async tokenize(
     @Body() dto: TokenizeDto,
     @Req() req: Request,
@@ -65,12 +67,11 @@ export class PiiController {
     );
   }
 
-  /**
-   * POST /api/v1/G/pii/detokenize
-   * Send a token, get the decrypted PII value back.
-   */
   @Post('detokenize')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Detokenize PII', description: 'Send a token, get the decrypted PII value back.' })
+  @ApiResponse({ status: 200, description: 'PII detokenized successfully.' })
+  @ApiResponse({ status: 404, description: 'Token not found.' })
   async detokenize(
     @Body() dto: DetokenizeDto,
     @Req() req: Request,
@@ -81,12 +82,10 @@ export class PiiController {
     return this.detokenizationService.detokenize(dto.token, user.sub, ipAddress);
   }
 
-  /**
-   * POST /api/v1/G/pii/bulk-tokenize
-   * Tokenize multiple PII values in one request.
-   */
   @Post('bulk-tokenize')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Bulk tokenize PII', description: 'Tokenize multiple PII values in one request.' })
+  @ApiResponse({ status: 201, description: 'All PII values tokenized successfully.' })
   async bulkTokenize(
     @Body() dto: BulkTokenizeDto,
     @Req() req: Request,
@@ -97,12 +96,10 @@ export class PiiController {
     return this.tokenizationService.bulkTokenize(dto.items, user.sub, ipAddress);
   }
 
-  /**
-   * POST /api/v1/G/pii/bulk-detokenize
-   * Detokenize multiple tokens in one request.
-   */
   @Post('bulk-detokenize')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Bulk detokenize PII', description: 'Detokenize multiple tokens in one request.' })
+  @ApiResponse({ status: 200, description: 'All tokens detokenized successfully.' })
   async bulkDetokenize(
     @Body() dto: BulkDetokenizeDto,
     @Req() req: Request,
@@ -113,12 +110,12 @@ export class PiiController {
     return this.detokenizationService.bulkDetokenize(dto.tokens, user.sub, ipAddress);
   }
 
-  /**
-   * DELETE /api/v1/G/pii/tokens/:tokenId
-   * Delete a PII token and its encrypted data.
-   */
   @Delete('tokens/:tokenId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete PII token', description: 'Delete a PII token and its encrypted data.' })
+  @ApiParam({ name: 'tokenId', description: 'PII token ID', example: 'PII-92AF' })
+  @ApiResponse({ status: 204, description: 'Token deleted successfully.' })
+  @ApiResponse({ status: 404, description: 'Token not found.' })
   async deleteToken(
     @Param('tokenId') tokenId: string,
     @Req() req: Request,
@@ -129,11 +126,11 @@ export class PiiController {
     return this.tokenizationService.deleteToken(tokenId, user.sub, ipAddress);
   }
 
-  /**
-   * GET /api/v1/G/pii/tokens/:tokenId/audit
-   * Get the access log for a specific PII token.
-   */
   @Get('tokens/:tokenId/audit')
+  @ApiOperation({ summary: 'Get PII access audit log', description: 'Get the access log for a specific PII token.' })
+  @ApiParam({ name: 'tokenId', description: 'PII token ID', example: 'PII-92AF' })
+  @ApiResponse({ status: 200, description: 'Access log returned.' })
+  @ApiResponse({ status: 404, description: 'Token not found.' })
   async getAuditLog(
     @Param('tokenId') tokenId: string,
   ): Promise<PiiAccessLog[]> {

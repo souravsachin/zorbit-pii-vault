@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -18,6 +19,16 @@ async function bootstrap(): Promise<void> {
   );
 
   app.enableCors();
+
+  const config = new DocumentBuilder()
+    .setTitle('Zorbit PII Vault')
+    .setDescription('Secure storage of Personally Identifiable Information (PII) with tokenization, detokenization, encryption at rest (AES-256-GCM), and access audit capabilities.')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .addTag('pii', 'PII tokenization, detokenization, and management')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api-docs', app, document);
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT', 3005);
