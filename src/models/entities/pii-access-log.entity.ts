@@ -40,7 +40,7 @@ export class PiiAccessLog {
   action!: PiiAccessAction;
 
   /** IP address of the requester */
-  @Column({ name: 'ip_address', length: 45, nullable: true })
+  @Column({ name: 'ip_address', type: 'varchar', length: 45, nullable: true })
   ipAddress!: string | null;
 
   @CreateDateColumn({ name: 'created_at' })

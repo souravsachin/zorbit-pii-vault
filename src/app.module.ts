@@ -24,7 +24,7 @@ import { EncryptionKey } from './models/entities/encryption-key.entity';
         username: config.get<string>('DATABASE_USER', 'zorbit'),
         password: config.get<string>('DATABASE_PASSWORD', 'zorbit_dev'),
         entities: [PiiRecord, PiiAccessLog, EncryptionKey],
-        synchronize: false,
+        synchronize: config.get<string>('DATABASE_SYNCHRONIZE', 'false') === 'true',
         logging: config.get<string>('NODE_ENV') !== 'production',
       }),
     }),
