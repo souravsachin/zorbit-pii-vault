@@ -6,6 +6,7 @@ import { EventsModule } from './modules/events.module';
 import { PiiRecord } from './models/entities/pii-record.entity';
 import { PiiAccessLog } from './models/entities/pii-access-log.entity';
 import { EncryptionKey } from './models/entities/encryption-key.entity';
+import { HealthController } from './controllers/health.controller';
 
 @Module({
   imports: [
@@ -31,5 +32,6 @@ import { EncryptionKey } from './models/entities/encryption-key.entity';
     EventsModule,
     PiiModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}
