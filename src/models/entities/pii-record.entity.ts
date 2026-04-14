@@ -12,6 +12,11 @@ export enum PiiDataType {
   SSN = 'ssn',
   ADDRESS = 'address',
   NAME = 'name',
+  DATE_OF_BIRTH = 'date_of_birth',
+  PASSPORT = 'passport',
+  NATIONAL_ID = 'national_id',
+  BANK_ACCOUNT = 'bank_account',
+  MEDICAL_RECORD = 'medical_record',
   CUSTOM = 'custom',
 }
 

@@ -18,7 +18,13 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  app.enableCors();
+  const configService = app.get(ConfigService);
+
+  const corsOrigins = configService.get<string>('CORS_ORIGINS', 'http://localhost:3000');
+  app.enableCors({
+    origin: corsOrigins.split(',').map((o) => o.trim()),
+    credentials: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Zorbit PII Vault')
@@ -30,7 +36,6 @@ async function bootstrap(): Promise<void> {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT', 3005);
 
   await app.listen(port);

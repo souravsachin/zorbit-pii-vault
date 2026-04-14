@@ -3,10 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PiiModule } from './modules/pii.module';
 import { EventsModule } from './modules/events.module';
+import { VisibilityModule } from './visibility/visibility.module';
 import { PiiRecord } from './models/entities/pii-record.entity';
 import { PiiAccessLog } from './models/entities/pii-access-log.entity';
 import { EncryptionKey } from './models/entities/encryption-key.entity';
+import { VisibilityPolicy } from './visibility/entities/visibility-policy.entity';
+import { PiiNickname } from './visibility/entities/pii-nickname.entity';
 import { HealthController } from './controllers/health.controller';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -24,13 +28,15 @@ import { HealthController } from './controllers/health.controller';
         database: config.get<string>('DATABASE_NAME', 'zorbit_pii_vault'),
         username: config.get<string>('DATABASE_USER', 'zorbit'),
         password: config.get<string>('DATABASE_PASSWORD', 'zorbit_dev'),
-        entities: [PiiRecord, PiiAccessLog, EncryptionKey],
+        entities: [PiiRecord, PiiAccessLog, EncryptionKey, VisibilityPolicy, PiiNickname],
         synchronize: config.get<string>('DATABASE_SYNCHRONIZE', 'false') === 'true',
         logging: config.get<string>('NODE_ENV') !== 'production',
       }),
     }),
     EventsModule,
     PiiModule,
+    VisibilityModule,
+    SeedModule,
   ],
   controllers: [HealthController],
 })

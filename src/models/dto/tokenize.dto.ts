@@ -9,7 +9,7 @@ export class TokenizeDto {
   @IsNotEmpty()
   value!: string;
 
-  @ApiProperty({ description: 'Type of PII data', enum: ['email', 'phone', 'ssn', 'address', 'name', 'custom'] })
+  @ApiProperty({ description: 'Type of PII data', enum: ['email', 'phone', 'ssn', 'address', 'name', 'date_of_birth', 'passport', 'national_id', 'bank_account', 'medical_record', 'custom'] })
   @IsEnum(PiiDataType)
   dataType!: PiiDataType;
 
