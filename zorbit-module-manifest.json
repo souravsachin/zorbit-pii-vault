@@ -1,0 +1,48 @@
+{
+  "moduleId": "zorbit-cor-pii_vault",
+  "moduleName": "PII Vault Service",
+  "moduleType": "cor",
+  "version": "1.0.0",
+  "placement": {
+    "scaffold": "Platform Core",
+    "scaffoldSortOrder": 10,
+    "capabilityArea": "PII Vault",
+    "sortOrder": 50
+  },
+  "registration": {
+    "kafkaTopic": "platform-module-announcements",
+    "manifestUrl": "https://zorbit-uat.onezippy.ai/api/pii-vault/api/v1/G/manifest"
+  },
+  "navigation": {
+    "sections": [
+      {
+        "label": "PII Vault",
+        "icon": "lock",
+        "sortOrder": 5,
+        "items": [
+          {
+            "label": "PII Records",
+            "feRoute": "/m/pii-vault/records",
+            "beRoute": "/api/pii-vault/api/v1/G/pii/tokens",
+            "privilege": "pii.token.read",
+            "icon": "shield"
+          },
+          {
+            "label": "Visibility Policies",
+            "feRoute": "/m/pii-vault/visibility",
+            "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/pii/visibility-policies",
+            "privilege": "pii.visibility.manage",
+            "icon": "visibility"
+          }
+        ]
+      }
+    ]
+  },
+  "dependencies": [
+    "zorbit-cor-identity"
+  ],
+  "backend": {
+    "healthEndpoint": "/api/pii-vault/api/v1/G/health",
+    "apiPrefix": "/api/pii-vault/api/v1"
+  }
+}
