@@ -1,48 +1,274 @@
 {
-  "moduleId": "zorbit-cor-pii_vault",
-  "moduleName": "PII Vault Service",
-  "moduleType": "cor",
+  "db": {
+    "dbName": "zorbit_pii_vault",
+    "dbType": "postgres",
+    "operations": {
+      "backup": {
+        "method": "POST",
+        "beRoute": "/api/pii_vault/api/v1/G/db/backup",
+        "privilege": "pii_vault.db.backup"
+      },
+      "restore": {
+        "method": "POST",
+        "beRoute": "/api/pii_vault/api/v1/G/db/restore",
+        "privilege": "pii_vault.db.restore",
+        "destructive": true
+      },
+      "flushAllData": {
+        "method": "DELETE",
+        "beRoute": "/api/pii_vault/api/v1/G/seed/all",
+        "privilege": "pii_vault.seed.all",
+        "destructive": true
+      },
+      "seedDemoData": {
+        "method": "POST",
+        "beRoute": "/api/pii_vault/api/v1/G/seed/demo",
+        "privilege": "pii_vault.seed.demo"
+      },
+      "flushDemoData": {
+        "method": "DELETE",
+        "beRoute": "/api/pii_vault/api/v1/G/seed/demo",
+        "privilege": "pii_vault.seed.demo"
+      },
+      "seedSystemMin": {
+        "method": "POST",
+        "beRoute": "/api/pii_vault/api/v1/G/seed/system-min",
+        "privilege": "pii_vault.seed.system-min"
+      }
+    }
+  },
+  "guide": {
+    "docs": {
+      "links": [
+        {
+          "href": "/api/pii_vault/api-docs",
+          "label": "REST API reference"
+        },
+        {
+          "href": "/m/pii_vault/guide/whitepaper.pdf",
+          "label": "Architecture whitepaper"
+        }
+      ],
+      "feRoute": "/m/pii_vault/guide/resources"
+    },
+    "intro": {
+      "feRoute": "/m/pii_vault/guide/intro",
+      "summary": "This is the PII Vault Service module. Author its full description in the source manifest (US-MF-2089).",
+      "headline": "PII Vault Service"
+    },
+    "slides": {
+      "deck": [
+        {
+          "body": "What this module does (TBD by module author).",
+          "title": "Overview"
+        },
+        {
+          "body": "Key capabilities this module exposes (TBD).",
+          "title": "Capabilities"
+        },
+        {
+          "body": "How other modules integrate with it (TBD).",
+          "title": "Integration"
+        }
+      ],
+      "feRoute": "/m/pii_vault/guide/presentation"
+    },
+    "videos": {
+      "entries": [],
+      "feRoute": "/m/pii_vault/guide/videos"
+    },
+    "pricing": {
+      "tiers": [
+        {
+          "name": "Community",
+          "features": [
+            "Basic features",
+            "Community support"
+          ],
+          "monthlyPrice": 0
+        },
+        {
+          "name": "Business",
+          "features": [
+            "All features",
+            "Email support"
+          ],
+          "monthlyPrice": 199
+        },
+        {
+          "name": "Enterprise",
+          "features": [
+            "Dedicated CSM",
+            "SLA"
+          ],
+          "monthlyPrice": null
+        }
+      ],
+      "feRoute": "/m/pii_vault/guide/pricing"
+    },
+    "lifecycle": {
+      "phases": [
+        {
+          "name": "Draft",
+          "description": "Author and iterate."
+        },
+        {
+          "name": "Review",
+          "description": "Peer review."
+        },
+        {
+          "name": "Published",
+          "description": "Live."
+        },
+        {
+          "name": "Retired",
+          "description": "Archived; read-only."
+        }
+      ],
+      "feRoute": "/m/pii_vault/guide/lifecycle"
+    }
+  },
+  "backend": {
+    "apiPrefix": "/api/pii-vault/api/v1",
+    "healthEndpoint": "/api/pii-vault/api/v1/G/health"
+  },
   "version": "1.0.0",
+  "moduleId": "zorbit-cor-pii_vault",
   "placement": {
     "scaffold": "Platform Core",
-    "scaffoldSortOrder": 10,
+    "sortOrder": 50,
     "capabilityArea": "PII Vault",
-    "sortOrder": 50
+    "scaffoldSortOrder": 10
   },
-  "registration": {
-    "kafkaTopic": "platform-module-announcements",
-    "manifestUrl": "https://zorbit-uat.onezippy.ai/api/pii-vault/api/v1/G/manifest"
-  },
+  "moduleName": "PII Vault Service",
+  "moduleType": "cor",
   "navigation": {
     "sections": [
       {
-        "label": "PII Vault",
         "icon": "lock",
-        "sortOrder": 5,
         "items": [
           {
+            "icon": "shield",
             "label": "PII Records",
-            "feRoute": "/m/pii-vault/records",
             "beRoute": "/api/pii-vault/api/v1/G/pii/tokens",
+            "feRoute": "/m/pii-vault/records",
             "privilege": "pii.token.read",
-            "icon": "shield"
+            "feComponent": "PiiTokenRegistryPage"
           },
           {
+            "icon": "visibility",
             "label": "Visibility Policies",
-            "feRoute": "/m/pii-vault/visibility",
             "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/pii/visibility-policies",
+            "feRoute": "/m/pii-vault/visibility",
             "privilege": "pii.visibility.manage",
-            "icon": "visibility"
+            "feComponent": "PiiDataTypesPage"
           }
-        ]
+        ],
+        "label": "PII Vault",
+        "sortOrder": 5
+      },
+      {
+        "id": "guide",
+        "items": [
+          {
+            "icon": "book-open",
+            "label": "Intro",
+            "feRoute": "/m/pii_vault/guide/intro",
+            "feComponent": "GuideIntroView"
+          },
+          {
+            "icon": "presentation",
+            "label": "Presentation",
+            "feRoute": "/m/pii_vault/guide/presentation",
+            "feComponent": "GuideSlideDeck"
+          },
+          {
+            "icon": "git-branch",
+            "label": "Lifecycle",
+            "feRoute": "/m/pii_vault/guide/lifecycle",
+            "feComponent": "GuideLifecycle"
+          },
+          {
+            "icon": "video",
+            "label": "Videos",
+            "feRoute": "/m/pii_vault/guide/videos",
+            "feComponent": "GuideVideos"
+          },
+          {
+            "icon": "file-text",
+            "label": "Resources",
+            "feRoute": "/m/pii_vault/guide/resources",
+            "feComponent": "GuideDocs"
+          },
+          {
+            "icon": "dollar-sign",
+            "label": "Pricing",
+            "feRoute": "/m/pii_vault/guide/pricing",
+            "feComponent": "GuidePricing"
+          }
+        ],
+        "label": "Guide",
+        "sortOrder": 90
+      },
+      {
+        "id": "deployments",
+        "items": [
+          {
+            "icon": "server",
+            "label": "Deployments",
+            "feRoute": "/m/pii_vault/deployments",
+            "feComponent": "DeploymentsView"
+          }
+        ],
+        "label": "Deployments",
+        "sortOrder": 91
+      },
+      {
+        "id": "db",
+        "items": [
+          {
+            "icon": "database",
+            "label": "DB Operations",
+            "feRoute": "/m/pii_vault/db",
+            "feComponent": "DbOperationsPanel"
+          }
+        ],
+        "label": "Database",
+        "sortOrder": 92
+      }
+    ]
+  },
+  "deployments": {
+    "build": {
+      "builtAt": "2026-04-19T20:00:00Z",
+      "commitSha": "placeholder",
+      "dockerImage": "zorbit-cor-pii_vault:1.0.0",
+      "nodeVersion": "20.20.2"
+    },
+    "health": {
+      "beRoute": "/api/pii_vault/api/v1/G/health"
+    },
+    "runbook": {
+      "href": "/m/pii_vault/deployments/runbook"
+    },
+    "environments": [
+      {
+        "url": "https://zorbit-uat.onezippy.ai",
+        "name": "uat",
+        "status": "healthy"
+      },
+      {
+        "url": "https://zorbit.scalatics.com",
+        "name": "prod",
+        "status": "unknown"
       }
     ]
   },
   "dependencies": [
     "zorbit-cor-identity"
   ],
-  "backend": {
-    "healthEndpoint": "/api/pii-vault/api/v1/G/health",
-    "apiPrefix": "/api/pii-vault/api/v1"
+  "registration": {
+    "kafkaTopic": "platform-module-announcements",
+    "manifestUrl": "https://zorbit-uat.onezippy.ai/api/pii-vault/api/v1/G/manifest"
   }
 }
