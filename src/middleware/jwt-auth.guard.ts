@@ -1,9 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-
 /**
- * Guard that requires a valid JWT access token.
- * Uses the 'jwt' Passport strategy defined in JwtStrategy.
+ * SDK-backed re-export (EPIC 9 Tier 1 migration).
+ * The NestJS JWT guard now lives in @zorbit-platform/sdk-node as ZorbitJwtGuard.
  */
-@Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {}
+export { ZorbitJwtGuard as JwtAuthGuard } from '@zorbit-platform/sdk-node';

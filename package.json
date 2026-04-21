@@ -30,6 +30,7 @@
     "@nestjs/typeorm": "^10.0.1",
     "@opentelemetry/api": "^1.7.0",
     "@opentelemetry/sdk-node": "^0.46.0",
+    "@zorbit-platform/sdk-node": "file:../zorbit-sdk-node",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "kafkajs": "^2.2.4",
@@ -64,12 +65,23 @@
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.ts$": "ts-jest"
     },
     "collectCoverageFrom": [
       "src/**/*.(t|j)s"
     ],
     "coverageDirectory": "./coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@nestjs/common$": "<rootDir>/node_modules/@nestjs/common",
+      "^@nestjs/core$": "<rootDir>/node_modules/@nestjs/core",
+      "^@nestjs/passport$": "<rootDir>/node_modules/@nestjs/passport",
+      "^@nestjs/config$": "<rootDir>/node_modules/@nestjs/config",
+      "^passport$": "<rootDir>/node_modules/passport",
+      "^passport-jwt$": "<rootDir>/node_modules/passport-jwt",
+      "^reflect-metadata$": "<rootDir>/node_modules/reflect-metadata",
+      "^rxjs$": "<rootDir>/node_modules/rxjs",
+      "^rxjs/operators$": "<rootDir>/node_modules/rxjs/operators"
+    }
   }
 }
