@@ -132,7 +132,7 @@
     "apiPrefix": "/api/pii-vault/api/v1",
     "healthEndpoint": "/api/pii-vault/api/v1/G/health"
   },
-  "version": "1.0.0",
+  "version": "1.1.0",
   "moduleId": "zorbit-cor-pii_vault",
   "placement": {
     "scaffold": "Platform Core",
@@ -150,10 +150,25 @@
           {
             "icon": "shield",
             "label": "PII Records",
-            "beRoute": "/api/pii-vault/api/v1/G/pii/tokens",
+            "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/records",
             "feRoute": "/m/pii-vault/records",
             "privilege": "pii.token.read",
-            "feComponent": "PiiTokenRegistryPage"
+            "feComponent": "zorbit-pfs-datatable:DataTable",
+            "feProps": {
+              "pageId": "DT-PIV-REC",
+              "dataSource": {
+                "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/records",
+                "pageSize": 25
+              },
+              "columns": [
+                { "key": "tokenId", "label": "Token", "type": "id" },
+                { "key": "entityType", "label": "Entity Type", "type": "chip", "sortable": true, "filterable": true },
+                { "key": "entityId", "label": "Entity", "type": "id", "sortable": true, "filterable": true },
+                { "key": "dataType", "label": "Data Type", "type": "chip", "sortable": true, "filterable": true },
+                { "key": "createdAt", "label": "Created", "type": "datetime", "format": "relative", "sortable": true }
+              ],
+              "defaultSort": [ { "field": "createdAt", "order": "desc" } ]
+            }
           },
           {
             "icon": "visibility",
