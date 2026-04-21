@@ -312,5 +312,8 @@
   "registration": {
     "kafkaTopic": "platform-module-announcements",
     "manifestUrl": "https://zorbit-uat.onezippy.ai/api/pii-vault/api/v1/G/manifest"
+  },
+  "audit": {
+    "latestReport": null
   }
 }
