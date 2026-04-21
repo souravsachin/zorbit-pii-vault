@@ -11,6 +11,7 @@ import { VisibilityPolicy } from './visibility/entities/visibility-policy.entity
 import { PiiNickname } from './visibility/entities/pii-nickname.entity';
 import { HealthController } from './controllers/health.controller';
 import { SeedModule } from './seed/seed.module';
+import { ModuleAnnouncementService } from './events/module-announcement.service';
 
 @Module({
   imports: [
@@ -39,5 +40,6 @@ import { SeedModule } from './seed/seed.module';
     SeedModule,
   ],
   controllers: [HealthController],
+  providers: [ModuleAnnouncementService],
 })
 export class AppModule {}

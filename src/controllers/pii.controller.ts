@@ -16,6 +16,8 @@ import { TokenizationService } from '../services/tokenization.service';
 import { DetokenizationService } from '../services/detokenization.service';
 import { AuditService } from '../services/audit.service';
 import { JwtAuthGuard } from '../middleware/jwt-auth.guard';
+import { ZorbitPrivilegeGuard } from '../middleware/zorbit-privilege.guard';
+import { RequirePrivileges } from '../middleware/decorators';
 import { JwtPayload } from '../middleware/jwt.strategy';
 import {
   TokenizeDto,
@@ -37,7 +39,7 @@ import { PiiAccessLog } from '../models/entities/pii-access-log.entity';
 @ApiTags('pii')
 @ApiBearerAuth()
 @Controller('api/v1/G/pii')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, ZorbitPrivilegeGuard)
 export class PiiController {
   constructor(
     private readonly tokenizationService: TokenizationService,
@@ -46,6 +48,7 @@ export class PiiController {
   ) {}
 
   @Post('tokenize')
+  @RequirePrivileges('piivault.token.create')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Tokenize PII', description: 'Store PII data encrypted, return an opaque token.' })
   @ApiResponse({ status: 201, description: 'PII tokenized successfully, token returned.' })
@@ -68,6 +71,7 @@ export class PiiController {
   }
 
   @Post('detokenize')
+  @RequirePrivileges('piivault.token.read')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Detokenize PII', description: 'Send a token, get the decrypted PII value back.' })
   @ApiResponse({ status: 200, description: 'PII detokenized successfully.' })
@@ -83,6 +87,7 @@ export class PiiController {
   }
 
   @Post('bulk-tokenize')
+  @RequirePrivileges('piivault.token.create')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Bulk tokenize PII', description: 'Tokenize multiple PII values in one request.' })
   @ApiResponse({ status: 201, description: 'All PII values tokenized successfully.' })
@@ -97,6 +102,7 @@ export class PiiController {
   }
 
   @Post('bulk-detokenize')
+  @RequirePrivileges('piivault.token.read')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Bulk detokenize PII', description: 'Detokenize multiple tokens in one request.' })
   @ApiResponse({ status: 200, description: 'All tokens detokenized successfully.' })
@@ -111,6 +117,7 @@ export class PiiController {
   }
 
   @Delete('tokens/:tokenId')
+  @RequirePrivileges('piivault.token.delete')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete PII token', description: 'Delete a PII token and its encrypted data.' })
   @ApiParam({ name: 'tokenId', description: 'PII token ID', example: 'PII-92AF' })
@@ -127,6 +134,7 @@ export class PiiController {
   }
 
   @Get('tokens/:tokenId/audit')
+  @RequirePrivileges('piivault.token.read')
   @ApiOperation({ summary: 'Get PII access audit log', description: 'Get the access log for a specific PII token.' })
   @ApiParam({ name: 'tokenId', description: 'PII token ID', example: 'PII-92AF' })
   @ApiResponse({ status: 200, description: 'Access log returned.' })

@@ -22,6 +22,8 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../middleware/jwt-auth.guard';
+import { ZorbitPrivilegeGuard } from '../middleware/zorbit-privilege.guard';
+import { RequirePrivileges } from '../middleware/decorators';
 import { VisibilityService } from './visibility.service';
 import {
   CreateVisibilityPolicyDto,
@@ -44,13 +46,14 @@ import { VisibilityPolicy } from './entities/visibility-policy.entity';
 @ApiTags('visibility')
 @ApiBearerAuth()
 @Controller('api/v1/O/:orgId/pii')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, ZorbitPrivilegeGuard)
 export class VisibilityController {
   constructor(private readonly visibilityService: VisibilityService) {}
 
   // ── Policy CRUD ──────────────────────────────────────────────────────────
 
   @Post('visibility-policies')
+  @RequirePrivileges('piivault.visibility.create')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Create visibility policy',
@@ -67,6 +70,7 @@ export class VisibilityController {
   }
 
   @Get('visibility-policies')
+  @RequirePrivileges('piivault.visibility.read')
   @ApiOperation({
     summary: 'List visibility policies',
     description: 'List all visibility policies for an organisation, with optional filters.',
@@ -84,6 +88,7 @@ export class VisibilityController {
   }
 
   @Get('visibility-policies/:policyId')
+  @RequirePrivileges('piivault.visibility.read')
   @ApiOperation({ summary: 'Get a visibility policy by ID' })
   @ApiParam({ name: 'orgId', description: 'Organisation hash ID', example: 'O-92AF' })
   @ApiParam({ name: 'policyId', description: 'Policy hash ID', example: 'VP-A1B2' })
@@ -97,6 +102,7 @@ export class VisibilityController {
   }
 
   @Put('visibility-policies/:policyId')
+  @RequirePrivileges('piivault.visibility.update')
   @ApiOperation({ summary: 'Update a visibility policy' })
   @ApiParam({ name: 'orgId', description: 'Organisation hash ID', example: 'O-92AF' })
   @ApiParam({ name: 'policyId', description: 'Policy hash ID', example: 'VP-A1B2' })
@@ -111,6 +117,7 @@ export class VisibilityController {
   }
 
   @Delete('visibility-policies/:policyId')
+  @RequirePrivileges('piivault.visibility.delete')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a visibility policy' })
   @ApiParam({ name: 'orgId', description: 'Organisation hash ID', example: 'O-92AF' })
@@ -127,6 +134,7 @@ export class VisibilityController {
   // ── Seed Defaults ────────────────────────────────────────────────────────
 
   @Post('visibility-policies/seed-defaults')
+  @RequirePrivileges('platform.seed.execute')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Seed default visibility policies',
@@ -145,6 +153,7 @@ export class VisibilityController {
   // ── Resolve Visibility ───────────────────────────────────────────────────
 
   @Post('resolve-visibility')
+  @RequirePrivileges('piivault.visibility.read')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Resolve token visibility in batch',
