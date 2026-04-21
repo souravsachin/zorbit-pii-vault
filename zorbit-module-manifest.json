@@ -132,7 +132,7 @@
     "apiPrefix": "/api/pii-vault/api/v1",
     "healthEndpoint": "/api/pii-vault/api/v1/G/health"
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "moduleId": "zorbit-cor-pii_vault",
   "placement": {
     "scaffold": "Platform Core",
@@ -161,13 +161,46 @@
                 "pageSize": 25
               },
               "columns": [
-                { "key": "tokenId", "label": "Token", "type": "id" },
-                { "key": "entityType", "label": "Entity Type", "type": "chip", "sortable": true, "filterable": true },
-                { "key": "entityId", "label": "Entity", "type": "id", "sortable": true, "filterable": true },
-                { "key": "dataType", "label": "Data Type", "type": "chip", "sortable": true, "filterable": true },
-                { "key": "createdAt", "label": "Created", "type": "datetime", "format": "relative", "sortable": true }
+                {
+                  "key": "tokenId",
+                  "label": "Token",
+                  "type": "id"
+                },
+                {
+                  "key": "entityType",
+                  "label": "Entity Type",
+                  "type": "chip",
+                  "sortable": true,
+                  "filterable": true
+                },
+                {
+                  "key": "entityId",
+                  "label": "Entity",
+                  "type": "id",
+                  "sortable": true,
+                  "filterable": true
+                },
+                {
+                  "key": "dataType",
+                  "label": "Data Type",
+                  "type": "chip",
+                  "sortable": true,
+                  "filterable": true
+                },
+                {
+                  "key": "createdAt",
+                  "label": "Created",
+                  "type": "datetime",
+                  "format": "relative",
+                  "sortable": true
+                }
               ],
-              "defaultSort": [ { "field": "createdAt", "order": "desc" } ]
+              "defaultSort": [
+                {
+                  "field": "createdAt",
+                  "order": "desc"
+                }
+              ]
             }
           },
           {
@@ -224,19 +257,6 @@
         ],
         "label": "Guide",
         "sortOrder": 90
-      },
-      {
-        "id": "deployments",
-        "items": [
-          {
-            "icon": "server",
-            "label": "Deployments",
-            "feRoute": "/m/pii_vault/deployments",
-            "feComponent": "DeploymentsView"
-          }
-        ],
-        "label": "Deployments",
-        "sortOrder": 91
       },
       {
         "id": "db",
