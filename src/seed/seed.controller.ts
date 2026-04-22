@@ -1,7 +1,7 @@
 import { Controller, Post, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { SeedService } from './seed.service';
 
-@Controller('api/v1/G/pii-vault/seed')
+@Controller('api/v1/G/pii_vault/seed')
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 

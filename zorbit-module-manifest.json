@@ -129,8 +129,8 @@
     }
   },
   "backend": {
-    "apiPrefix": "/api/pii-vault/api/v1",
-    "healthEndpoint": "/api/pii-vault/api/v1/G/health"
+    "apiPrefix": "/api/pii_vault/api/v1",
+    "healthEndpoint": "/api/pii_vault/api/v1/G/health"
   },
   "version": "1.4.0",
   "moduleId": "zorbit-cor-pii_vault",
@@ -200,14 +200,14 @@
           {
             "icon": "shield",
             "label": "PII Records",
-            "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/records",
-            "feRoute": "/m/pii-vault/records",
+            "beRoute": "/api/pii_vault/api/v1/O/{{org_id}}/records",
+            "feRoute": "/m/pii_vault/records",
             "privilege": "pii.token.read",
             "feComponent": "zorbit-pfs-datatable:DataTable",
             "feProps": {
               "pageId": "DT-PIV-REC",
               "dataSource": {
-                "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/records",
+                "beRoute": "/api/pii_vault/api/v1/O/{{org_id}}/records",
                 "pageSize": 25
               },
               "columns": [
@@ -256,8 +256,8 @@
           {
             "icon": "visibility",
             "label": "Visibility Policies",
-            "beRoute": "/api/pii-vault/api/v1/O/{{org_id}}/pii/visibility-policies",
-            "feRoute": "/m/pii-vault/visibility",
+            "beRoute": "/api/pii_vault/api/v1/O/{{org_id}}/pii/visibility-policies",
+            "feRoute": "/m/pii_vault/visibility",
             "privilege": "pii.visibility.manage",
             "feComponent": "PiiDataTypesPage"
           }
@@ -311,7 +311,7 @@
   ],
   "registration": {
     "kafkaTopic": "platform-module-announcements",
-    "manifestUrl": "https://zorbit-uat.onezippy.ai/api/pii-vault/api/v1/G/manifest"
+    "manifestUrl": "https://zorbit-uat.onezippy.ai/api/pii_vault/api/v1/G/manifest"
   },
   "audit": {
     "latestReport": null
