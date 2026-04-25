@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ZorbitAuthModule } from '@zorbit-platform/sdk-node';
 import { PiiModule } from './modules/pii.module';
 import { EventsModule } from './modules/events.module';
 import { VisibilityModule } from './visibility/visibility.module';
@@ -18,6 +19,12 @@ import { ModuleAnnouncementService } from './events/module-announcement.service'
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    // EPIC-9 / SDK 0.5.0 — single-line auth wiring. Replaces per-feature
+    // PassportModule.register() + JwtModule.registerAsync() + local
+    // JwtStrategy. See 00_docs/platform/sdk-di-factory-design.md.
+    ZorbitAuthModule.forRoot({
+      jwtSecret: process.env.JWT_SECRET ?? 'dev-secret-change-in-production',
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
