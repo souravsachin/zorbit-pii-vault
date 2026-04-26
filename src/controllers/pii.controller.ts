@@ -18,7 +18,9 @@ import { AuditService } from '../services/audit.service';
 import { JwtAuthGuard } from '../middleware/jwt-auth.guard';
 import { ZorbitPrivilegeGuard } from '../middleware/zorbit-privilege.guard';
 import { RequirePrivileges } from '../middleware/decorators';
-import { JwtPayload } from '../middleware/jwt.strategy';
+// SDK-0.5.0 migration: import the canonical JWT payload from the SDK
+// instead of the local strategy file (now deleted).
+import type { ZorbitJwtPayload as JwtPayload } from '@zorbit-platform/sdk-node';
 import {
   TokenizeDto,
   DetokenizeDto,
