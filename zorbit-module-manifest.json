@@ -262,20 +262,52 @@
             "feComponent": "PiiDataTypesPage"
           }
         ],
-        "label": "PII Vault",
+        "id": "data",
+        "label": "Data",
         "sortOrder": 10
       },
       {
+        "id": "setup",
+        "label": "Setup",
+        "icon": "Settings",
+        "sortOrder": 15,
+        "items": [
+          {
+            "icon": "Key",
+            "label": "Encryption Keys",
+            "feRoute": "/m/pii_vault/setup/keys",
+            "beRoute": "/api/pii_vault/api/v1/G/keys",
+            "privilege": "pii.visibility.manage",
+            "sortOrder": 1
+          },
+          {
+            "icon": "ShieldCheck",
+            "label": "Data Type Policies",
+            "feRoute": "/m/pii_vault/setup/policies",
+            "beRoute": "/api/pii_vault/api/v1/G/policies",
+            "privilege": "pii.visibility.manage",
+            "sortOrder": 2
+          }
+        ]
+      },
+      {
         "id": "zorbit-cor-pii_vault-db",
+        "groupId": "deployment",
         "items": [
           {
             "icon": "database",
             "label": "DB Operations",
             "feRoute": "/m/pii_vault/db",
             "feComponent": "DbOperationsPanel"
+          },
+          {
+            "icon": "Activity",
+            "label": "Health",
+            "feRoute": "/m/pii_vault/health",
+            "feComponent": "HealthPanel"
           }
         ],
-        "label": "Database",
+        "label": "Deployment",
         "sortOrder": 20
       }
     ]
