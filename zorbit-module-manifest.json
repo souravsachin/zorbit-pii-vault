@@ -135,7 +135,7 @@
   "version": "1.4.0",
   "moduleId": "zorbit-cor-pii_vault",
   "placement": {
-    "scaffold": "Platform Core",
+    "scaffold": "core_platform_services",
     "sortOrder": 50,
     "capabilityArea": "PII Vault",
     "scaffoldSortOrder": 10
